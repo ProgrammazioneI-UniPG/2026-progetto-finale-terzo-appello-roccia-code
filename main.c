@@ -1,10 +1,10 @@
 #include "gamelib.h"
-
-// Questo file continene solo la definizione della funzione main
-// con il menu principale 1-2-3
-
-int main( ) {
+#include <stdio.h>
+#include <stdlib.h>
 
 
-
+int main() {
+    system("clear");
+    menu_di_gioco();
+    return 0;
 }
