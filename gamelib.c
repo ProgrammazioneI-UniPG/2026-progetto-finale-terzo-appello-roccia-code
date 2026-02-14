@@ -356,7 +356,6 @@ static void scelta_menu_mappa(){
             case 5:
                 if(map_generated){
                     stampa_zona();
-                    printf("\n\n***************\t ZONA STAMPATA \t***************\n\n");
                     break;
 
                 }
@@ -521,7 +520,7 @@ static void inserisci_zona(){
             obj--;
             if(obj<0 || obj>4)
                 printf("ERRORE: scelta non valida\n");
-        }while(obj<=0 || obj>4);
+        }while(obj<0 || obj>4);
         
         printf("Premere invio per continuare...");
         clear_my_buffer();
@@ -610,7 +609,7 @@ static void cancella_zona(){
             system("clear");
             printf("ERRORE - Scelta non valida\n");
         };
-    } while (sz<=0 || sz>contatore);
+    } while (sz<0 || sz>contatore);
         struct Zona_mondoreale* temp_pzmr = prima_zona_mondoreale;
         struct Zona_soprasotto* temp_pzss=prima_zona_soprasotto;
         if(sz==1){     
@@ -756,7 +755,8 @@ static void stampa_zona(){
     printf("\n");
     nomenemico(scan_zona_soprasotto->nemico);
     printf("\n\n");
-
+    printf("Premere invio per continuare...");
+    clear_my_buffer();
 }
 
 static void stampa_zona_giocatore(struct Zona_mondoreale* zone_mr, struct Zona_soprasotto* zone_ss, int world){
@@ -841,16 +841,16 @@ static void stampa_dati_giocatori(){
                 printf(": ");
                 switch (giocatori[i].zaino[c]){
                     case 0:
-                        printf("Non fa niente\n");
+                        printf("Non ha alcun utilizzo speciale;\n");
                         break;
                     case 1:
-                        printf("Puoi effettuare il viaggio rapido in qualsiasi zona nel tuo mondo\n");
+                        printf("Puoi effettuare il viaggio rapido in qualsiasi zona nel tuo mondo;\n");
                         break;
                     case 2:
-                        printf("Se te la metti sei troppo figo; ricevi un bonus del 30 per cento in più di punti fortuna(se non sei UndiciVirgolaCinque)\n");
+                        printf("Se te la metti sei troppo figo; ricevi un bonus del 30 per cento in più di punti fortuna(se non sei UndiciVirgolaCinque), ma puoi indossarla solo una volta;\n");
                         break;
                     case 3:
-                        printf("E' una bussola! Ti dice le informazioni della prossima zona\n");
+                        printf("E' una bussola! Ti dice le informazioni della prossima zona;\n");
                         break;
                     case 4:
                         printf("ATTENZIONE, USA QUESTO OGGETTO A TUO RISCHIO E PERICOLO: verrai impossessato dallo spirito chitarristico dal signore supremo dei downstroke, GIACOMO ETTOCAMPO. \n\t questo ti darà una potenza sovrumana e diventerai il mastro delle barbie. E potrai sconfiggere ogni nemico in un solo colpo... Ma non prima di aver detto 228 volte la parola 'YEAH'.\n");
@@ -859,7 +859,7 @@ static void stampa_dati_giocatori(){
             }
         }
     }
-    printf("\n\n");
+    printf("\n\n\n\n");
 }
 
 static void nomezona(int zona){
@@ -1192,8 +1192,8 @@ static void raccogli_oggetto(){
             nomeoggetto(giocatori[g_random].pos_mondoreale->oggetto);
             printf("\n\n");
             giocatori[g_random].pos_mondoreale->oggetto=0;
+            contaoggetti++;
         }
-        contaoggetti++;
     }
 }
 
@@ -1221,6 +1221,11 @@ static void utilizza_oggetto(int ogg){
         case 2:
             giocatori[g_random].fortuna+=(giocatori[g_random].fortuna*30)/100;
             printf("hai indossato la maglietta FuocoInferno: ora hai %d punti fortuna\n ", giocatori[g_random].fortuna);
+            for(int i=0; i<3; i++){
+                if(giocatori[g_random].zaino[i]==ogg){
+                    giocatori[g_random].zaino[i]=0;
+                }
+            }
             break;
         case 3:
             printf("Hai usato la bussola! ecco i dati della zona dopo la tua: \n");
