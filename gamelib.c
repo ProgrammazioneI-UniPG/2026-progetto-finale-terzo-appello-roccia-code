@@ -599,74 +599,80 @@ static void inserisci_zona(){
 static void cancella_zona(){
     if (contatore>0){
         int sz=0;
-    while(1){
-        do{
-        printf("inserisci la posizione della zone che vuoi cancellare(da 1 a %d): ", contatore);
-        read_int(&sz);
-        printf("Premere invio per continuare...");
-        clear_my_buffer();
-        if(sz<=0||sz>contatore){
-            system("clear");
-            printf("ERRORE - Scelta non valida\n");
-        };
-    } while (sz<0 || sz>contatore);
-        struct Zona_mondoreale* temp_pzmr = prima_zona_mondoreale;
-        struct Zona_soprasotto* temp_pzss=prima_zona_soprasotto;
-        if(sz==1){     
-            temp_pzmr=prima_zona_mondoreale->avanti;
-            temp_pzmr->indietro=NULL;
-            free(prima_zona_mondoreale);
-            prima_zona_mondoreale=temp_pzmr;
-            temp_pzss=prima_zona_soprasotto->avanti;
-            temp_pzss->indietro=NULL;
-            if(prima_zona_soprasotto->nemico==3){
-                contademo=0;
-            }
-            free(prima_zona_soprasotto);
-            prima_zona_soprasotto=temp_pzss;
-            contatore--;
-            break;
-        } else if (sz==contatore){
-            temp_pzmr=ultima_zona_mondoreale->indietro;
-            temp_pzss=ultima_zona_soprasotto->indietro;
-            free(ultima_zona_mondoreale);
-            temp_pzmr->avanti=NULL;
-            ultima_zona_mondoreale=temp_pzmr;
-            if(ultima_zona_soprasotto->nemico==3){
-                contademo=0;
-            }
-            free(ultima_zona_soprasotto);
-            temp_pzss->avanti=NULL;
-            ultima_zona_soprasotto=temp_pzss;
-            contatore--;
-            break;
-        } else{
-            struct Zona_mondoreale* zona_interna_mr;
-            struct Zona_soprasotto* zona_interna_ss;
-            for(int i=1; i<sz-1; i++){
-                temp_pzmr=temp_pzmr->avanti;
-                temp_pzss=temp_pzss->avanti;
-            }
+        while(1){
+            do{
+                printf("inserisci la posizione della zone che vuoi cancellare(da 1 a %d): ", contatore);
+                read_int(&sz);
+                printf("Premere invio per continuare...");
+                clear_my_buffer();
+                if(sz<=0||sz>contatore){
+                    system("clear");
+                    printf("ERRORE - Scelta non valida\n");
+                }
+            } while (sz<0 || sz>contatore);
 
-            zona_interna_mr=temp_pzmr->avanti->avanti;
-            free(zona_interna_mr->indietro);
-            temp_pzmr->avanti=zona_interna_mr;
-            zona_interna_mr->indietro=temp_pzmr;
+            struct Zona_mondoreale* temp_pzmr = prima_zona_mondoreale;
+            struct Zona_soprasotto* temp_pzss=prima_zona_soprasotto;
+            if(sz==1){
+                if(contatore>1)     
+                    temp_pzmr=prima_zona_mondoreale->avanti;
+                else
+                    temp_pzmr=prima_zona_mondoreale;
+                temp_pzmr->indietro=NULL;
+                free(prima_zona_mondoreale);
+                prima_zona_mondoreale=temp_pzmr;
+                if(contatore>1)
+                    temp_pzss=prima_zona_soprasotto->avanti;
+                else 
+                    temp_pzss=prima_zona_soprasotto;
+                temp_pzss->indietro=NULL;
+                if(prima_zona_soprasotto->nemico==3){
+                    contademo=0;
+                }
+                free(prima_zona_soprasotto);
+                prima_zona_soprasotto=temp_pzss;
+                contatore--;
+                break;
+            } else if (sz==contatore){
+                temp_pzmr=ultima_zona_mondoreale->indietro;
+                temp_pzss=ultima_zona_soprasotto->indietro;
+                free(ultima_zona_mondoreale);
+                temp_pzmr->avanti=NULL;
+                ultima_zona_mondoreale=temp_pzmr;
+                if(ultima_zona_soprasotto->nemico==3){
+                    contademo=0;
+                }
+                free(ultima_zona_soprasotto);
+                temp_pzss->avanti=NULL;
+                ultima_zona_soprasotto=temp_pzss;
+                contatore--;
+                break;
+            } else{
+                struct Zona_mondoreale* zona_interna_mr;
+                struct Zona_soprasotto* zona_interna_ss;
+                for(int i=1; i<sz-1; i++){
+                    temp_pzmr=temp_pzmr->avanti;
+                    temp_pzss=temp_pzss->avanti;
+                }
 
-            zona_interna_ss=temp_pzss->avanti->avanti;
-            if(zona_interna_ss->indietro->nemico==3){
-                contademo=0;
+                zona_interna_mr=temp_pzmr->avanti->avanti;
+                free(zona_interna_mr->indietro);
+                temp_pzmr->avanti=zona_interna_mr;
+                zona_interna_mr->indietro=temp_pzmr;
+
+                zona_interna_ss=temp_pzss->avanti->avanti;
+                if(zona_interna_ss->indietro->nemico==3){
+                    contademo=0;
+                }
+                free(zona_interna_ss->indietro);
+                temp_pzss->avanti=zona_interna_ss;
+                zona_interna_ss->indietro=temp_pzss;
+                contatore--;
+                break;
             }
-            free(zona_interna_ss->indietro);
-            temp_pzss->avanti=zona_interna_ss;
-            zona_interna_ss->indietro=temp_pzss;
-            contatore--;
-            break;
         }
-    }
-} else
-    printf("Non ci sono zone nella mappa!\n\n");
-    
+    } else
+        printf("Non ci sono zone nella mappa!\n\n"), map_status=0;   
 }
 
 static void chiudi_mappa(){
