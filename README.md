@@ -2,11 +2,11 @@
 # Progetto-finale-2025-Cosestrane
 Progetto finale Programmazione Procedurale UniPG Informatica
 
-## Nome: 
+## Nome: Marco
 
-## Cognome: 
+## Cognome: Zancan
 
-## Matricola:
+## Matricola: 390428
 
 ## Commenti/modifiche al progetto:
 
